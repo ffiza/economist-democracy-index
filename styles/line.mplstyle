@@ -3,6 +3,8 @@ axes.spines.left:   False
 axes.spines.top:    False
 axes.spines.right:  False
 axes.edgecolor:     "#5b5b5b"
+axes.facecolor:     "white"
+savefig.facecolor:  "white"
 xtick.labelsize:    7.0
 xtick.color:        "#5b5b5b"
 xtick.labelcolor:   "#5b5b5b"
@@ -14,6 +16,7 @@ ytick.minor.size:   0.0
 font.size:          5.0
 text.color:         "#5b5b5b"
 lines.linewidth:    1.0
+lines.color:        "#5b5b5b"
 figure.figsize:     5.0, 3.5
 axes.grid:          True
 axes.grid.axis:     y

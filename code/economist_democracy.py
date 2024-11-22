@@ -61,11 +61,11 @@ class DemocracyFigures:
         for country in self.data.df["Country"].unique():
             country_data = self.data.df[self.data.df["Country"] == country]
             ax.plot(country_data["Year"], country_data["DemocracyIndex"],
-                    color="gainsboro", lw=0.25, alpha=0.5)
+                    color=colors.BACKGROUND_LINE, lw=0.25, alpha=0.5)
 
         world_df = self.data.get_world_average()
         ax.plot(world_df["Year"], world_df["DemocracyIndex"],
-                color="black")
+                color=colors.LINE)
 
         region_df = self.data.get_region_averages()
         for i, region in enumerate(region_df["Region"].unique()):
@@ -87,7 +87,7 @@ class DemocracyFigures:
         ax.text(s="Western Europe", x=2011, y=8.2,
                 va="center", ha="center", color=colors.PALETTE[6], weight=600)
         ax.text(s="World", x=2010, y=5.2,
-                va="center", ha="center", color="black", weight=600)
+                va="center", ha="center", color=colors.BLACK, weight=600)
 
         self._add_texts(ax)
 
@@ -106,11 +106,11 @@ class DemocracyFigures:
         for country in self.data.df["Country"].unique():
             country_data = self.data.df[self.data.df["Country"] == country]
             ax.plot(country_data["Year"], country_data["DemocracyIndex"],
-                    color="gainsboro", lw=0.25, alpha=0.5)
+                    color=colors.BACKGROUND_LINE, lw=0.25, alpha=0.5)
 
         world_df = self.data.get_world_average()
         ax.plot(world_df["Year"], world_df["DemocracyIndex"],
-                color="black")
+                color=colors.BLACK)
 
         self._add_country(ax, "Argentina", (2018, 7.2), colors.PALETTE[0])
         self._add_country(ax, "United States", (2021, 7.6), colors.PALETTE[1])
@@ -119,7 +119,7 @@ class DemocracyFigures:
         self._add_country(ax, "Norway", (2018, 9.6), colors.PALETTE[4])
 
         ax.text(s="World", x=2010, y=5.2, va="center", ha="center",
-                color="black", weight=600)
+                color="#f1f3f5", weight=600)
 
         self._add_texts(ax)
 
@@ -135,52 +135,43 @@ class DemocracyFigures:
                 ha="center", color=color, weight=600)
 
     def _add_texts(self, ax: plt.Axes):
-        colors = Colors()
         ax.text(
             s="The Economist Democracy Index, 2006 to 2023",
-            x=-0.05, y=1.25,
-            color=colors.DARKGRAY, weight=600, ha="left",
-            va="top", size=10, transform=ax.transAxes)
+            x=-0.05, y=1.25, weight=600, ha="left", va="top", size=10,
+            transform=ax.transAxes)
         ax.text(
             s="The Democracy Index published by the Economist Group is an"
             + " index measuring the quality of democracy across the world.",
-            x=-0.05, y=1.18,
-            color=colors.DARKGRAY, ha="left",
-            va="top", size=5.5, transform=ax.transAxes)
+            x=-0.05, y=1.18, ha="left", va="top", size=5.5,
+            transform=ax.transAxes)
         ax.text(
             s="This quantitative and comparative assessment is centrally"
             + " concerned with democratic rights and democratic institutions.",
-            x=-0.05, y=1.14,
-            color=colors.DARKGRAY, ha="left",
-            va="top", size=5.5, transform=ax.transAxes)
+            x=-0.05, y=1.14, ha="left", va="top", size=5.5,
+            transform=ax.transAxes)
         ax.text(
             s="The index is based on 60"
             + " indicators grouped into five categories, measuring pluralism,"
             + " civil liberties, and political culture.",
-            x=-0.05, y=1.10,
-            color=colors.DARKGRAY, ha="left",
-            va="top", size=5.5, transform=ax.transAxes)
+            x=-0.05, y=1.10, ha="left", va="top", size=5.5,
+            transform=ax.transAxes)
         ax.text(
             s="Source(s):",
-            x=-0.05, y=-0.12, weight=600,
-            color=colors.DARKGRAY, ha="left",
-            va="top", size=4, transform=ax.transAxes)
+            x=-0.05, y=-0.12, weight=600, ha="left", va="top", size=4,
+            transform=ax.transAxes)
         ax.text(
             s="The Economist/Wikipedia "
             + "(https://en.wikipedia.org/wiki/The_Economist_Democracy_Index)",
-            x=0.01, y=-0.12,
-            color=colors.DARKGRAY, ha="left",
-            va="top", size=4, transform=ax.transAxes)
+            x=0.01, y=-0.12, ha="left", va="top", size=4,
+            transform=ax.transAxes)
         ax.text(
             s="LESS DEMOCRATIC",
-            x=0.005, y=0.01, weight=600,
-            color=colors.DARKGRAY, ha="left",
-            va="bottom", size=4, transform=ax.transAxes)
+            x=0.005, y=0.01, weight=600, ha="left", va="bottom", size=4,
+            transform=ax.transAxes)
         ax.text(
             s="MORE DEMOCRATIC",
-            x=0.005, y=0.99, weight=600,
-            color=colors.DARKGRAY, ha="left",
-            va="top", size=4, transform=ax.transAxes)
+            x=0.005, y=0.99, weight=600, ha="left", va="top", size=4,
+            transform=ax.transAxes)
 
 
 if __name__ == "__main__":
