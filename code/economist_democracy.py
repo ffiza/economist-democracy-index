@@ -1,6 +1,7 @@
 from colors import Colors
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.patheffects as pe
 plt.style.use("./styles/line.mplstyle")
 
 
@@ -65,29 +66,45 @@ class DemocracyFigures:
 
         world_df = self.data.get_world_average()
         ax.plot(world_df["Year"], world_df["DemocracyIndex"],
-                color=colors.LINE)
+                color=colors.LINE, ls="--", zorder=15)
 
         region_df = self.data.get_region_averages()
         for i, region in enumerate(region_df["Region"].unique()):
             region_data = region_df[region_df["Region"] == region]
             ax.plot(region_data["Year"], region_data["DemocracyIndex"],
                     color=colors.PALETTE[i])
-        ax.text(s="Asia and Australasia", x=2018.5, y=5.8,
-                va="center", ha="center", color=colors.PALETTE[0], weight=600)
-        ax.text(s="Central and Eastern Europe", x=2017.5, y=5.2,
-                va="center", ha="center", color=colors.PALETTE[1], weight=600)
+        ax.text(s="Asia and Australasia", x=2018.5, y=5.85,
+                va="center", ha="center", color=colors.PALETTE[0], weight=600,
+                path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
+        ax.text(s="Central and Eastern Europe", x=2017.5, y=5.15,
+                va="center", ha="center", color=colors.PALETTE[1], weight=600,
+                path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
         ax.text(s="Latin America and the Caribbean", x=2014, y=6.6,
-                va="center", ha="center", color=colors.PALETTE[2], weight=600)
-        ax.text(s="Middle East and North Africa", x=2017, y=3.2,
-                va="center", ha="center", color=colors.PALETTE[3], weight=600)
-        ax.text(s="North America", x=2019, y=8.8,
-                va="center", ha="center", color=colors.PALETTE[4], weight=600)
+                va="center", ha="center", color=colors.PALETTE[2], weight=600,
+                path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
+        ax.text(s="Middle East and North Africa", x=2017, y=3.3,
+                va="center", ha="center", color=colors.PALETTE[3], weight=600,
+                path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
+        ax.text(s="North America", x=2019, y=8.75,
+                va="center", ha="center", color=colors.PALETTE[4], weight=600,
+                path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
         ax.text(s="Sub-Saharan Africa", x=2008, y=4.5,
-                va="center", ha="center", color=colors.PALETTE[5], weight=600)
+                va="center", ha="center", color=colors.PALETTE[5], weight=600,
+                path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
         ax.text(s="Western Europe", x=2011, y=8.2,
-                va="center", ha="center", color=colors.PALETTE[6], weight=600)
-        ax.text(s="World", x=2010, y=5.2,
-                va="center", ha="center", color=colors.BLACK, weight=600)
+                va="center", ha="center", color=colors.PALETTE[6], weight=600,
+                path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
+        ax.text(s="World", x=2010, y=5.25,
+                va="center", ha="center", color=colors.BLACK, weight=600,
+                path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
 
         self._add_texts(ax)
 
@@ -112,7 +129,7 @@ class DemocracyFigures:
         ax.plot(world_df["Year"], world_df["DemocracyIndex"],
                 color=colors.BLACK)
 
-        self._add_country(ax, "Argentina", (2018, 7.2), colors.PALETTE[0])
+        self._add_country(ax, "Argentina", (2018, 7.25), colors.PALETTE[0])
         self._add_country(ax, "United States", (2021, 7.6), colors.PALETTE[1])
         self._add_country(ax, "Ireland", (2022, 9.4), colors.PALETTE[2])
         self._add_country(ax, "Canada", (2011, 9.3), colors.PALETTE[3])
@@ -132,7 +149,8 @@ class DemocracyFigures:
         ax.plot(country_data["Year"], country_data["DemocracyIndex"],
                 color=color)
         ax.text(s=country, x=text_pos[0], y=text_pos[1], va="center",
-                ha="center", color=color, weight=600)
+                ha="center", color=color, weight=600,
+                path_effects=[pe.withStroke(linewidth=1.5, foreground="w")])
 
     def _add_texts(self, ax: plt.Axes):
         ax.text(
@@ -167,11 +185,13 @@ class DemocracyFigures:
         ax.text(
             s="LESS DEMOCRATIC",
             x=0.005, y=0.01, weight=600, ha="left", va="bottom", size=4,
-            transform=ax.transAxes)
+            transform=ax.transAxes, path_effects=[pe.withStroke(
+                linewidth=1.5, foreground="w")])
         ax.text(
             s="MORE DEMOCRATIC",
             x=0.005, y=0.99, weight=600, ha="left", va="top", size=4,
-            transform=ax.transAxes)
+            transform=ax.transAxes, path_effects=[pe.withStroke(
+                linewidth=1.5, foreground="w")])
 
 
 if __name__ == "__main__":
