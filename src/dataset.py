@@ -28,6 +28,9 @@ class Data:
     def filter_by_regime(self, regimes: list[str]) -> pd.DataFrame:
         return self._filter("RegimeType", regimes)
 
+    def filter_by_year(self, year: int) -> pd.DataFrame:
+        return self.df[self.df["Year"] == year]
+
     def _filter(self, key: str, values: list[str]) -> pd.DataFrame:
         return self.df[self.df[key].isin(values)]
 
