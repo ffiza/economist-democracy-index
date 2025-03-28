@@ -6,3 +6,6 @@ create-environment:
 
 create-plots:
 	python .\src\plots.py
+
+run-tests:
+	python -m unittest discover tests
