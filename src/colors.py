@@ -3,6 +3,8 @@ class Colors:
         self.LINE = "black"
         self.BACKGROUND_LINE = "gainsboro"
         self.BLACK = "black"
+        self.GRAY = "#7f7f7f"
+
         self.BLUE = "#1f77b4"
         self.ORANGE = "#ff7f0e"
         self.GREEN = "#2ca02c"
@@ -10,6 +12,23 @@ class Colors:
         self.PURPLE = "#9467bd"
         self.BROWN = "#8c564b"
         self.PINK = "#e377c2"
-        self.GRAY = "#7f7f7f"
-        self.PALETTE = [self.BLUE, self.ORANGE, self.GREEN, self.RED,
-                        self.PURPLE, self.BROWN, self.PINK, self.GRAY]
+
+        self.LIGHT_BLUE = "#d2e3f0"
+        self.LIGHT_ORANGE = "#ffe5ce"
+        self.LIGHT_GREEN = "#d4ecd4"
+        self.LIGHT_RED = "#f6d3d4"
+        self.LIGHT_PURPLE = "#e9e0f1"
+        self.LIGHT_BROWN = "#e8dddb"
+        self.LIGHT_PINK = "#f9e3f2"
+
+    @staticmethod
+    def get_opaque_hex_from_transparency(hex: str, transparency: float) -> str:
+        """
+        Convert a hex color to an opaque hex color with the given transparency.
+        """
+        hex = hex.lstrip("#")
+        r, g, b = tuple(int(hex[i:i + 2], 16) for i in (0, 2, 4))
+        r = int(255 - transparency * (255 - r))
+        g = int(255 - transparency * (255 - g))
+        b = int(255 - transparency * (255 - b))
+        return "#{:02x}{:02x}{:02x}".format(r, g, b)

@@ -3,13 +3,14 @@ import matplotlib.patheffects as pe
 
 from colors import Colors
 from dataset import Data
+from config import Config
 
 plt.style.use("./styles/line.mplstyle")
 
 
 def plot_evolution_regions():
     data = Data()
-    colors = Colors()
+    config = Config()
 
     fig, ax = plt.subplots()
 
@@ -20,42 +21,24 @@ def plot_evolution_regions():
 
     for country in data.df["Country"].unique():
         country_data = data.df[data.df["Country"] == country]
-        ax.plot(country_data["Year"], country_data["DemocracyIndex"],
-                color=colors.BACKGROUND_LINE, lw=0.25, alpha=0.5)
+        ax.plot(
+            country_data["Year"], country_data["DemocracyIndex"], lw=0.25,
+            color=config.region_bg_colors[country_data["Region"].values[0]])
 
+    regions = data.df["Region"].unique()
+    regions_xpos = dict(zip(regions,
+                            [2019, 2011, 2017.5, 2014, 2018.5, 2017, 2008]))
+    regions_ypos = dict(zip(regions,
+                            [8.75, 8.2, 5.15, 6.6, 5.85, 3.3, 4.5]))
     region_df = data.get_region_averages()
-    for i, region in enumerate(region_df["Region"].unique()):
+    for region in regions:
         region_data = region_df[region_df["Region"] == region]
         ax.plot(region_data["Year"], region_data["DemocracyIndex"],
-                color=colors.PALETTE[i])
-    ax.text(s="Asia and Australasia", x=2018.5, y=5.85,
-            va="center", ha="center", color=colors.PALETTE[0], weight=600,
-            path_effects=[pe.withStroke(
-                linewidth=1.5, foreground="w")])
-    ax.text(s="Central and Eastern Europe", x=2017.5, y=5.15,
-            va="center", ha="center", color=colors.PALETTE[1], weight=600,
-            path_effects=[pe.withStroke(
-                linewidth=1.5, foreground="w")])
-    ax.text(s="Latin America and the Caribbean", x=2014, y=6.6,
-            va="center", ha="center", color=colors.PALETTE[2], weight=600,
-            path_effects=[pe.withStroke(
-                linewidth=1.5, foreground="w")])
-    ax.text(s="Middle East and North Africa", x=2017, y=3.3,
-            va="center", ha="center", color=colors.PALETTE[3], weight=600,
-            path_effects=[pe.withStroke(
-                linewidth=1.5, foreground="w")])
-    ax.text(s="North America", x=2019, y=8.75,
-            va="center", ha="center", color=colors.PALETTE[4], weight=600,
-            path_effects=[pe.withStroke(
-                linewidth=1.5, foreground="w")])
-    ax.text(s="Sub-Saharan Africa", x=2008, y=4.5,
-            va="center", ha="center", color=colors.PALETTE[5], weight=600,
-            path_effects=[pe.withStroke(
-                linewidth=1.5, foreground="w")])
-    ax.text(s="Western Europe", x=2011, y=8.2,
-            va="center", ha="center", color=colors.PALETTE[6], weight=600,
-            path_effects=[pe.withStroke(
-                linewidth=1.5, foreground="w")])
+                color=config.region_colors[region])
+        ax.text(s=region, x=regions_xpos[region], y=regions_ypos[region],
+                va="center", ha="center", color=config.region_colors[region],
+                weight=600, path_effects=[pe.withStroke(
+                    linewidth=1.5, foreground="w")])
 
     _add_texts(ax)
 
@@ -78,11 +61,11 @@ def plot_evolution_countries():
         ax.plot(country_data["Year"], country_data["DemocracyIndex"],
                 color=colors.BACKGROUND_LINE, lw=0.25, alpha=0.5)
 
-    _add_country(ax, "Argentina", (2018, 7.25), colors.PALETTE[0])
-    _add_country(ax, "United States", (2021, 7.6), colors.PALETTE[1])
-    _add_country(ax, "Ireland", (2022, 9.4), colors.PALETTE[2])
-    _add_country(ax, "Canada", (2011, 9.3), colors.PALETTE[3])
-    _add_country(ax, "Norway", (2018, 9.6), colors.PALETTE[4])
+    _add_country(ax, "Argentina", (2018, 7.25), colors.BLUE)
+    _add_country(ax, "United States", (2021, 7.6), colors.ORANGE)
+    _add_country(ax, "Ireland", (2022, 9.4), colors.GREEN)
+    _add_country(ax, "Canada", (2011, 9.3), colors.RED)
+    _add_country(ax, "Norway", (2018, 9.6), colors.PURPLE)
 
     ax.text(s="World", x=2010, y=5.2, va="center", ha="center",
             color="#f1f3f5", weight=600)
