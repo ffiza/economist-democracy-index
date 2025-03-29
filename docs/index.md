@@ -6,3 +6,4 @@ published by the Economist Group.
 ## Sources
 
 - **Wikipedia contributors.** (n.d.). The Economist Democracy Index. Wikipedia, The Free Encyclopedia. Retrieved November 11, 2024, from [https://en.wikipedia.org/wiki/The_Economist_Democracy_Index](https://en.wikipedia.org/wiki/The_Economist_Democracy_Index).
+- Geographical data obtained from [https://www.naturalearthdata.com/](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-boundary-lines/).
