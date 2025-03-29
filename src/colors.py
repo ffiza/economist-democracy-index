@@ -1,3 +1,6 @@
+import matplotlib.colors as mcolors
+
+
 class Colors:
     def __init__(self):
         self.LINE = "black"
@@ -20,6 +23,13 @@ class Colors:
         self.LIGHT_PURPLE = "#e9e0f1"
         self.LIGHT_BROWN = "#e8dddb"
         self.LIGHT_PINK = "#f9e3f2"
+
+        self.colormaps = {
+            "RdWtGr": mcolors.LinearSegmentedColormap.from_list(
+                        "RdWtGr",
+                        [self.RED, "white", self.GREEN],
+                        N=8)
+        }
 
     @staticmethod
     def get_opaque_hex_from_transparency(hex: str, transparency: float) -> str:
