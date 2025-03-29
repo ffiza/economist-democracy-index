@@ -154,7 +154,7 @@ def plot_world_map_index():
 
     ax.text(
         s="The Economist Democracy Index Map, 2023",
-        x=0, y=1.075, weight=600, ha="left", va="top", size=14,
+        x=0, y=1.075, weight=600, ha="left", va="top", size=12,
         transform=ax.transAxes)
     ax.text(
         s="Source(s):",
