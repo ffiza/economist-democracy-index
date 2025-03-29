@@ -70,3 +70,21 @@ def get_merged_dataframe() -> pd.DataFrame:
                                 how="left")
 
     return merged_df
+
+
+def get_yearly_geographic_data(year: int) -> pd.DataFrame:
+    df = get_merged_dataframe()
+    df = df[df["NAME"] != "Antarctica"]
+    df = df[df["Year"] == year]
+    return df
+
+
+def get_index_change_geographic_data(start_year: int,
+                                     end_year: int) -> pd.DataFrame:
+    df = get_merged_dataframe()
+    df = df[df["NAME"] != "Antarctica"]
+    index_change = df[df["Year"] == end_year]["DemocracyIndex"].to_numpy() \
+        - df[df["Year"] == start_year]["DemocracyIndex"].to_numpy()
+    df = df[df["Year"] == end_year]
+    df["IndexChange"] = index_change
+    return df

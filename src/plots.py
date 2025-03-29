@@ -2,7 +2,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
 
 from colors import Colors
-from dataset import Data, get_merged_dataframe
+from dataset import Data, get_yearly_geographic_data
+from dataset import get_index_change_geographic_data
 from config import Config
 
 plt.style.use("./styles/line.mplstyle")
@@ -130,9 +131,7 @@ def _add_country(ax: plt.Axes, country: str, text_pos: tuple,
 
 
 def plot_world_map_index():
-    df = get_merged_dataframe()
-    df = df[df["NAME"] != "Antarctica"]
-    df = df[df["Year"] == 2023]
+    df = get_yearly_geographic_data(year=2023)
 
     fig, ax = plt.subplots()
 
@@ -170,15 +169,10 @@ def plot_world_map_index():
     fig.savefig("reports/figures/map_index_2023.png")
 
 
-def plot_world_map_index_change():
+def plot_world_map_index_change(start_year: int, end_year: int) -> None:
     colors = Colors()
 
-    df = get_merged_dataframe()
-    df = df[df["NAME"] != "Antarctica"]
-    index_change = df[df["Year"] == 2023]["DemocracyIndex"].to_numpy() \
-        - df[df["Year"] == 2006]["DemocracyIndex"].to_numpy()
-    df = df[df["Year"] == 2023]
-    df["IndexChange"] = index_change
+    df = get_index_change_geographic_data(start_year, end_year)
 
     fig, ax = plt.subplots()
 
@@ -200,7 +194,8 @@ def plot_world_map_index_change():
         spine.set_visible(False)
 
     ax.text(
-        s="Change in the Economist Democracy Index, 2006 - 2023",
+        s="Change in the Economist Democracy Index, "
+          f"{start_year} - {end_year}",
         x=0, y=1.075, weight=600, ha="left", va="top", size=12,
         transform=ax.transAxes)
     ax.text(
@@ -214,11 +209,12 @@ def plot_world_map_index_change():
         transform=ax.transAxes)
 
     fig.tight_layout()
-    fig.savefig("reports/figures/map_index_change_2023.png")
+    fig.savefig("reports/figures/map_index_change_"
+                f"{start_year}_to_{end_year}.png")
 
 
 if __name__ == "__main__":
     plot_evolution_regions()
     plot_evolution_countries()
     plot_world_map_index()
-    plot_world_map_index_change()
+    plot_world_map_index_change(start_year=2006, end_year=2023)
