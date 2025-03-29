@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
 
 from colors import Colors
-from dataset import Data
+from dataset import Data, get_merged_dataframe
 from config import Config
 
 plt.style.use("./styles/line.mplstyle")
@@ -129,6 +129,96 @@ def _add_country(ax: plt.Axes, country: str, text_pos: tuple,
             path_effects=[pe.withStroke(linewidth=1.5, foreground="w")])
 
 
+def plot_world_map_index():
+    df = get_merged_dataframe()
+    df = df[df["NAME"] != "Antarctica"]
+    df = df[df["Year"] == 2023]
+
+    fig, ax = plt.subplots()
+
+    ax.set_xlim(-180, 180)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.spines["bottom"].set_visible(False)
+
+    df.plot(column="DemocracyIndex", ax=ax, edgecolor="white",
+            linewidth=0.1, vmin=0, vmax=10, legend=True, cmap="viridis",
+            legend_kwds={"location": "bottom", "aspect": 80, "pad": 0.03})
+
+    cbar = ax.get_figure().axes[-1]
+    cbar.xaxis.set_ticks_position('top')
+    cbar.xaxis.set_label_position('top')
+    cbar.tick_params(axis="x", length=0, labelsize=5, pad=2)
+    for spine in cbar.spines.values():
+        spine.set_visible(False)
+
+    ax.text(
+        s="The Economist Democracy Index Map, 2023",
+        x=0, y=1.075, weight=600, ha="left", va="top", size=14,
+        transform=ax.transAxes)
+    ax.text(
+        s="Source(s):",
+        x=0, y=-0.1, weight=600, ha="left", va="top", size=4,
+        transform=ax.transAxes)
+    ax.text(
+        s="The Economist/Wikipedia "
+        + "(https://en.wikipedia.org/wiki/The_Economist_Democracy_Index)",
+        x=0.06, y=-0.1, ha="left", va="top", size=4,
+        transform=ax.transAxes)
+
+    fig.tight_layout()
+    fig.savefig("reports/figures/map_index_2023.png")
+
+
+def plot_world_map_index_change():
+    colors = Colors()
+
+    df = get_merged_dataframe()
+    df = df[df["NAME"] != "Antarctica"]
+    index_change = df[df["Year"] == 2023]["DemocracyIndex"].to_numpy() \
+        - df[df["Year"] == 2006]["DemocracyIndex"].to_numpy()
+    df = df[df["Year"] == 2023]
+    df["IndexChange"] = index_change
+
+    fig, ax = plt.subplots()
+
+    ax.set_xlim(-180, 180)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.spines["bottom"].set_visible(False)
+
+    df.plot(column="IndexChange", ax=ax, edgecolor="white",
+            linewidth=0.1, vmin=-4, vmax=4, legend=True,
+            cmap=colors.colormaps["RdWtGr"],
+            legend_kwds={"location": "bottom", "aspect": 80, "pad": 0.03})
+
+    cbar = ax.get_figure().axes[-1]
+    cbar.xaxis.set_ticks_position('top')
+    cbar.xaxis.set_label_position('top')
+    cbar.tick_params(axis="x", length=0, labelsize=5, pad=2)
+    for spine in cbar.spines.values():
+        spine.set_visible(False)
+
+    ax.text(
+        s="Change in the Economist Democracy Index, 2006 - 2023",
+        x=0, y=1.075, weight=600, ha="left", va="top", size=12,
+        transform=ax.transAxes)
+    ax.text(
+        s="Source(s):",
+        x=0, y=-0.1, weight=600, ha="left", va="top", size=4,
+        transform=ax.transAxes)
+    ax.text(
+        s="The Economist/Wikipedia "
+        + "(https://en.wikipedia.org/wiki/The_Economist_Democracy_Index)",
+        x=0.06, y=-0.1, ha="left", va="top", size=4,
+        transform=ax.transAxes)
+
+    fig.tight_layout()
+    fig.savefig("reports/figures/map_index_change_2023.png")
+
+
 if __name__ == "__main__":
     plot_evolution_regions()
     plot_evolution_countries()
+    plot_world_map_index()
+    plot_world_map_index_change()

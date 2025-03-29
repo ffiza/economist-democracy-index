@@ -1,4 +1,5 @@
 import pandas as pd
+import geopandas as gpd
 
 
 class Data:
@@ -43,3 +44,29 @@ class Data:
             ["Region", "Year"], observed=True)[
                 "DemocracyIndex"].mean().reset_index(
                     name="DemocracyIndex")
+
+
+def get_merged_dataframe() -> pd.DataFrame:
+    data = Data().df
+    countries = gpd.read_file(
+        "data/external/ne_110m_admin_0_countries/"
+        "ne_110m_admin_0_countries.shp")
+
+    # Use names in `data`
+    to_replace = [
+        "Bosnia and Herz.", "Côte d'Ivoire", "United States of America",
+        "Central African Rep.", "Eq. Guinea", "Congo", "eSwatini",
+        "Czechia", "Dominican Rep.", "Dem. Rep. Congo", "Timor-Leste",
+        "Greenland", "Falkland Is."]
+    value = [
+        "Bosnia and Herzegovina", "Ivory Coast", "United States",
+        "Central African Republic", "Equatorial Guinea",
+        "Republic of the Congo", "Eswatini", "Czech Republic",
+        "Dominican Republic", "Democratic Republic of the Congo",
+        "East Timor", "Denmark", "Argentina"]
+    countries.replace(to_replace=to_replace, value=value, inplace=True)
+
+    merged_df = countries.merge(data, left_on="NAME", right_on="Country",
+                                how="left")
+
+    return merged_df
