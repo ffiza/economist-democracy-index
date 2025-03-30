@@ -218,3 +218,4 @@ if __name__ == "__main__":
     plot_evolution_countries()
     plot_world_map_index()
     plot_world_map_index_change(start_year=2006, end_year=2023)
+    plot_world_map_index_change(start_year=2006, end_year=2015)
