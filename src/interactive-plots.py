@@ -60,7 +60,7 @@ def plot_evolution_regions(_add_annotations):
     fig = go.Figure()
 
     fig.update_layout(
-        width=1000, height=700, plot_bgcolor="white",
+        width=736, height=514, plot_bgcolor="white",
         yaxis=dict(range=[0, 10.1], tickvals=[i for i in range(11)],
                    ticks="outside", ticklen=0,
                    tickfont=dict(size=16, color=colors.GRAY, weight=500),
@@ -73,7 +73,7 @@ def plot_evolution_regions(_add_annotations):
                    tickfont=dict(size=16, color=colors.GRAY, weight=500),
                    zeroline=False),
         showlegend=False,
-        margin=dict(l=50, r=10, t=120, b=60)
+        margin=dict(l=30, r=30, t=120, b=60)
     )
 
     regions = list(data.df["Region"].unique())
@@ -100,7 +100,7 @@ def plot_evolution_regions(_add_annotations):
 
     _add_annotations(fig=fig)
 
-    fig.write_html("docs/assets/time_series_by_region.html",
+    fig.write_html("reports/html/time_series_by_region.html",
                    full_html=False, include_plotlyjs='cdn')
 
 
