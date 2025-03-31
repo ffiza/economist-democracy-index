@@ -12,3 +12,4 @@ run-tests:
 
 create-plots:
 	python .\src\plots.py
+	python .\src\interactive-plots.py
