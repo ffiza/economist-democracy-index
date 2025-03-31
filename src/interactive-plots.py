@@ -77,9 +77,7 @@ def plot_evolution_regions(_add_annotations):
     )
 
     regions = list(data.df["Region"].unique())
-    print(regions)
-    y_offsets = dict(
-        zip(regions, [0.2, -0.2, 0.125, 0.2, -0.2, -0.2, 0.2]))
+    y_offsets = dict(zip(regions, [0.2, -0.2, 0.125, 0.2, -0.2, -0.2, 0.2]))
     region_df = data.get_region_averages()
     for region in regions:
         region_data = region_df[region_df["Region"] == region]
@@ -102,7 +100,8 @@ def plot_evolution_regions(_add_annotations):
 
     _add_annotations(fig=fig)
 
-    fig.show()
+    fig.write_html("docs/assets/time_series_by_region.html",
+                   full_html=False, include_plotlyjs='cdn')
 
 
 if __name__ == "__main__":
