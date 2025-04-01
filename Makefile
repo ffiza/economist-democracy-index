@@ -1,6 +1,6 @@
-.PHONY: all create-environment run-tests create-plots
+.PHONY: all create-environment run-tests get-raw-data create-plots
 
-all: create-environment run-tests create-plots
+all: create-environment run-tests get-raw-data create-plots
 
 create-environment:
 	python -m venv .venv
@@ -9,6 +9,9 @@ create-environment:
 
 run-tests:
 	python -m unittest discover tests
+
+get-raw-data:
+	python .\src\raw_data.py
 
 create-plots:
 	python .\src\static_plots.py
