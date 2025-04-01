@@ -291,6 +291,70 @@ def plot_world_map_index_change(start_year: int, end_year: int) -> None:
                     f"_to_{end_year}.png")
 
 
+def plot_regions() -> None:
+    df = get_yearly_geographic_data(year=2006)
+    colors = Colors()
+    config = Config()
+
+    # Define colorscale for regions
+    region_mapping = {
+        region: i for i, region in enumerate(config.region_colors.keys())}
+    df['RegionCode'] = df['Region'].map(region_mapping)
+    colorscale = [
+        (i / 6, list(config.region_colors.values())[i]) for i in range(7)]
+
+    fig = go.Figure(
+        data=go.Choropleth(
+            locations=df['ISO_A3_EH'], z=df['RegionCode'], text=df['Country'],
+            colorscale=colorscale, customdata=df['Region'],
+            marker_line_color='white',
+            showscale=False,
+            marker_line_width=0.3, zmin=0, zmax=6,
+            hovertemplate="<b>%{text}</b><br>Region: %{customdata}<extra></extra>",
+            hoverlabel=dict(
+                bgcolor="white",
+                bordercolor="rgb(0, 0, 0, 0)"),
+            ))
+
+    for i, region in enumerate(config.region_colors.keys()):
+        fig.add_annotation(
+            text="<b>" + region + "</b>",
+            x=0, y=0.05 + i * 0.03, showarrow=False,
+            xref="paper", yref="paper", xanchor="left", yanchor="middle",
+            font={"color": config.region_colors[region], "size": 11})
+
+    fig.update_layout(
+        width=720, height=400, plot_bgcolor="white",
+        showlegend=False, margin=dict(l=10, r=10, t=0, b=10),
+        geo=dict(
+            showframe=False,
+            showcoastlines=False,
+            bgcolor='rgba(0,0,0,0)',
+            lataxis=dict(range=[-60, 90])))
+
+    fig.add_annotation(
+        text=f"<b>World Regions</b>",
+        x=0, y=1.01, showarrow=False,
+        xref="paper", yref="paper", xanchor="left", yanchor="top",
+        font={"color": colors.DARK_GRAY, "size": 20})
+    fig.add_annotation(
+        text="This chart shows a world map of the different regions.",
+        x=0, y=0.95, showarrow=False, align="left",
+        xref="paper", yref="paper", xanchor="left", yanchor="top",
+        font={"color": colors.DARK_GRAY, "size": 14})
+    fig.add_annotation(
+        text="<b>Source(s):</b> "
+        + "<a href='https://en.wikipedia.org/wiki/The_Economist"
+        + "_Democracy_Index'>The Economist/Wikipedia</a>",
+        x=0, y=0.002, showarrow=False,
+        xref="paper", yref="paper", xanchor="left", yanchor="middle",
+        font={"color": colors.DARK_GRAY, "size": 11})
+
+    fig.write_html("reports/html/map_regions.html",
+                   full_html=False, include_plotlyjs='cdn')
+    fig.write_image("reports/figures/map_regions.png")
+
+
 if __name__ == "__main__":
     plot_evolution_regions()
     plot_evolution_countries()
@@ -298,3 +362,4 @@ if __name__ == "__main__":
     plot_world_map_index(year=2024)
     plot_world_map_index_change(start_year=2006, end_year=2015)
     plot_world_map_index_change(start_year=2006, end_year=2024)
+    plot_regions()
