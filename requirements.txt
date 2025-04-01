@@ -2,3 +2,5 @@ matplotlib==3.9.2
 pandas==2.2.3
 geopandas==1.0.1
 plotly==6.0.1
+wikipedia==1.4.0
+lxml==5.3.1
