@@ -298,4 +298,4 @@ if __name__ == "__main__":
     plot_world_map_index(year=2023)
     plot_world_map_index(year=2024)
     plot_world_map_index_change(start_year=2006, end_year=2015)
-    plot_world_map_index_change(start_year=2006, end_year=2023)
+    plot_world_map_index_change(start_year=2006, end_year=2024)
