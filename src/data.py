@@ -9,7 +9,8 @@ class Data:
 
     def _setup_data(self):
         self.df = pd.read_csv("data/raw/democracy_index.csv")
-        self.df.drop(columns=["2023 rank"], inplace=True)
+        self.df = self.df[self.df.columns.drop(
+            list(self.df.filter(regex=' rank')))]
         self.df["Region"] = self.df["Region"].astype("category")
         self.df["RegimeType"] = self.df["RegimeType"].astype("category")
 
