@@ -8,7 +8,7 @@ class Data:
         self._setup_data()
 
     def _setup_data(self):
-        self.df = pd.read_csv("data/raw/economist_democracy.csv")
+        self.df = pd.read_csv("data/raw/democracy_index.csv")
         self.df.drop(columns=["2023 rank"], inplace=True)
         self.df["Region"] = self.df["Region"].astype("category")
         self.df["RegimeType"] = self.df["RegimeType"].astype("category")
