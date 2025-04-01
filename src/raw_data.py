@@ -11,7 +11,7 @@ def get_raw_data():
         raise ValueError("The expected table was not found on the Wikipedia.")
 
     df.rename(columns={"Regime type": "RegimeType"}, inplace=True)
-    df.to_csv("data/raw/economist_democracy_index.csv", index=False)
+    df.to_csv("data/raw/democracy_index.csv", index=False)
 
 
 if __name__ == "__main__":
