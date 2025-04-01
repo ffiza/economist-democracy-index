@@ -14,5 +14,4 @@ get-raw-data:
 	python .\src\raw_data.py
 
 create-plots:
-	python .\src\static_plots.py
-	python .\src\interactive_plots.py
+	python .\src\plots.py
