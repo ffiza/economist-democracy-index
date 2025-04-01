@@ -7,6 +7,7 @@ class Colors:
         self.BLACK = "black"
         self.GRAY = "#7f7f7f"
         self.LIGHT_GRAY = "gainsboro"
+        self.DARK_GRAY = "#404040"
 
         self.BLUE = "#1f77b4"
         self.ORANGE = "#ff7f0e"
@@ -29,6 +30,16 @@ class Colors:
                         "RdWtGr",
                         [self.RED, "white", self.GREEN],
                         N=8)
+        }
+
+        colorscale = []
+        for i in range(8):
+            j = i / 8
+            c = mcolors.rgb2hex(self.colormaps["RdWtGr"]((j + j + 1/8) / 2))
+            colorscale.append((j, c))
+            colorscale.append((j + 1 / 8, c))
+        self.colorscales = {
+            "RdWtGr": colorscale,
         }
 
     @staticmethod
