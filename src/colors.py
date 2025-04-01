@@ -4,9 +4,9 @@ import matplotlib.colors as mcolors
 class Colors:
     def __init__(self):
         self.LINE = "black"
-        self.BACKGROUND_LINE = "gainsboro"
         self.BLACK = "black"
         self.GRAY = "#7f7f7f"
+        self.LIGHT_GRAY = "gainsboro"
 
         self.BLUE = "#1f77b4"
         self.ORANGE = "#ff7f0e"

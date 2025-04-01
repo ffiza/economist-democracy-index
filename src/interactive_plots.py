@@ -65,7 +65,7 @@ def plot_evolution_regions(_add_annotations):
                    ticks="outside", ticklen=0,
                    tickfont=dict(size=16, color=colors.GRAY, weight=500),
                    zeroline=True, zerolinewidth=2, zerolinecolor=colors.GRAY,
-                   showgrid=True, gridcolor=colors.BACKGROUND_LINE,
+                   showgrid=True, gridcolor=colors.LIGHT_GRAY,
                    gridwidth=2, griddash="dot"),
         xaxis=dict(range=[2006, 2023],
                    tickvals=[year for year in range(2007, 2024, 2)],

@@ -60,7 +60,7 @@ def plot_evolution_countries():
     for country in data.df["Country"].unique():
         country_data = data.df[data.df["Country"] == country]
         ax.plot(country_data["Year"], country_data["DemocracyIndex"],
-                color=colors.BACKGROUND_LINE, lw=0.25, alpha=0.5)
+                color=colors.LIGHT_GRAY, lw=0.25, alpha=0.5)
 
     _add_country(ax, "Argentina", (2018, 7.25), colors.BLUE)
     _add_country(ax, "United States", (2021, 7.6), colors.ORANGE)
