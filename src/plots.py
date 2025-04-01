@@ -88,7 +88,7 @@ def plot_evolution_regions() -> None:
 
 
 def plot_evolution_countries() -> None:
-    data = Data()
+    # data = Data()
     colors = Colors()
 
     fig = go.Figure()
