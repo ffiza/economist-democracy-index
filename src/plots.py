@@ -310,7 +310,8 @@ def plot_regions() -> None:
             marker_line_color='white',
             showscale=False,
             marker_line_width=0.3, zmin=0, zmax=6,
-            hovertemplate="<b>%{text}</b><br>Region: %{customdata}<extra></extra>",
+            hovertemplate="<b>%{text}</b><br>Region: "
+                          "%{customdata}<extra></extra>",
             hoverlabel=dict(
                 bgcolor="white",
                 bordercolor="rgb(0, 0, 0, 0)"),
@@ -333,7 +334,7 @@ def plot_regions() -> None:
             lataxis=dict(range=[-60, 90])))
 
     fig.add_annotation(
-        text=f"<b>World Regions</b>",
+        text="<b>World Regions</b>",
         x=0, y=1.01, showarrow=False,
         xref="paper", yref="paper", xanchor="left", yanchor="top",
         font={"color": colors.DARK_GRAY, "size": 20})
