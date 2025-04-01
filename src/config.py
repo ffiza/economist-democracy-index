@@ -8,7 +8,7 @@ class Config:
         self.region_colors = {
             "North America": colors.PURPLE,
             "Western Europe": colors.PINK,
-            "Central and Eastern Europe": colors.ORANGE,
+            "Eastern Europe and Central Asia": colors.ORANGE,
             "Latin America and the Caribbean": colors.GREEN,
             "Asia and Australasia": colors.BLUE,
             "Middle East and North Africa": colors.RED,
@@ -18,7 +18,7 @@ class Config:
         self.region_bg_colors = {
             "North America": colors.LIGHT_PURPLE,
             "Western Europe": colors.LIGHT_PINK,
-            "Central and Eastern Europe": colors.LIGHT_ORANGE,
+            "Eastern Europe and Central Asia": colors.LIGHT_ORANGE,
             "Latin America and the Caribbean": colors.LIGHT_GREEN,
             "Asia and Australasia": colors.LIGHT_BLUE,
             "Middle East and North Africa": colors.LIGHT_RED,
