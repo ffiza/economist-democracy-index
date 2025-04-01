@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
 
 from colors import Colors
-from dataset import Data, get_yearly_geographic_data
-from dataset import get_index_change_geographic_data
+from data import Data, get_yearly_geographic_data
+from data import get_index_change_geographic_data
 from config import Config
 
 plt.style.use("./styles/line.mplstyle")

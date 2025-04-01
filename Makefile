@@ -11,5 +11,5 @@ run-tests:
 	python -m unittest discover tests
 
 create-plots:
-	python .\src\plots.py
-	python .\src\interactive-plots.py
+	python .\src\static_plots.py
+	python .\src\interactive_plots.py

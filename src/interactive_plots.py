@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 from plotly.graph_objects import Figure
 
 from colors import Colors
-from dataset import Data
+from data import Data
 from config import Config
 
 
