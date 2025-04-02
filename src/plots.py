@@ -88,7 +88,6 @@ def plot_evolution_regions() -> None:
 
 
 def plot_evolution_countries() -> None:
-    # data = Data()
     colors = Colors()
 
     fig = go.Figure()
@@ -110,20 +109,12 @@ def plot_evolution_countries() -> None:
         margin=dict(l=20, r=20, t=85, b=50)
     )
 
-    # for country in data.df["Country"].unique():
-    #     country_data = data.df[data.df["Country"] == country]
-    #     fig.add_trace(
-    #         go.Scatter(x=country_data["Year"],
-    #                    y=country_data["DemocracyIndex"],
-    #                    mode="lines", name=country,
-    #                    line=dict(color=colors.LIGHT_GRAY, width=0.5),
-    #                    hoverinfo="skip"))
-
     _add_country(fig, "Argentina", (2018, 7.3), colors.BLUE)
     _add_country(fig, "Mali", (2013, 6.2), colors.ORANGE)
     _add_country(fig, "Bhutan", (2022.5, 5.25), colors.GREEN)
     _add_country(fig, "Afghanistan", (2022.5, 0.7), colors.RED)
     _add_country(fig, "Norway", (2018, 9.6), colors.PURPLE)
+    _add_country(fig, "Nicaragua", (2023, 1.9), colors.BROWN)
 
     fig.add_annotation(
         text="<b>The Economist Democracy Index, 2006 - 2024</b>",
@@ -357,10 +348,10 @@ def plot_regions() -> None:
 
 
 if __name__ == "__main__":
-    plot_evolution_regions()
+    # plot_evolution_regions()
     plot_evolution_countries()
-    plot_world_map_index(year=2006)
-    plot_world_map_index(year=2024)
-    plot_world_map_index_change(start_year=2006, end_year=2015)
-    plot_world_map_index_change(start_year=2006, end_year=2024)
-    plot_regions()
+    # plot_world_map_index(year=2006)
+    # plot_world_map_index(year=2024)
+    # plot_world_map_index_change(start_year=2006, end_year=2015)
+    # plot_world_map_index_change(start_year=2006, end_year=2024)
+    # plot_regions()
