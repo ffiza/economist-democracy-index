@@ -349,6 +349,7 @@ def plot_regions() -> None:
 
 
 def plot_regime_migration(start_year: int, end_year: int) -> None:
+    colors = Colors()
     m = get_migration_matrix(start_year, end_year)
     column_labels = ["Full<br>Democracies", "Flawed<br>Democracies",
                      "Hybrid<br>Regimes", "Authoritarian<br>Regimes"]
@@ -391,8 +392,8 @@ def plot_regime_migration(start_year: int, end_year: int) -> None:
         for c in range(num_cols):
             if not np.isnan(m[r, c]):
                 text_color = "white"
-                if (r == num_rows - 1 or c == num_cols - 1):
-                    text_color = "black"
+                if (r == num_rows - 1 or c == num_cols - 1 or m[r, c] >= 30):
+                    text_color = colors.DARK_GRAY
                 fig.add_annotation(
                     x=c, y=num_rows - r - 1,
                     text="<b>" + str(int(m[r, c])) + "</b>",
@@ -403,24 +404,26 @@ def plot_regime_migration(start_year: int, end_year: int) -> None:
         fig.add_annotation(
             x=i, y=1, text=column_labels[len(column_labels) - i - 1],
             showarrow=False, yref="paper", xanchor="center", yanchor="bottom",
-            textangle=270, align="left", font=dict(color="black", size=14))
+            textangle=270, align="left", font=dict(color=colors.DARK_GRAY,
+                                                   size=14))
         fig.add_annotation(
             x=0, y=i + 1, text=col, xref="paper", showarrow=False,
             xanchor="right", yanchor="middle", align="right",
-            font=dict(color="black", size=14))
+            font=dict(color=colors.DARK_GRAY, size=14))
 
-    fig.add_shape(type="line", x0=-0.25, y0=0.2, x1=-0.25, y1=1, xref="paper",
-                  yref="paper", line=dict(color="black", width=1.5))
-    fig.add_shape(type="line", x0=0, y0=1.25, x1=0.8, y1=1.25, xref="paper",
-                  yref="paper", line=dict(color="black", width=1.5))
+    fig.add_shape(type="line", x0=-0.255, y0=0.2, x1=-0.255, y1=1,
+                  xref="paper", yref="paper",
+                  line=dict(color=colors.DARK_GRAY, width=1.5))
+    fig.add_shape(type="line", x0=0, y0=1.255, x1=0.8, y1=1.255, xref="paper",
+                  yref="paper", line=dict(color=colors.DARK_GRAY, width=1.5))
     fig.add_annotation(
         x=0.4, y=1.32, text=f"<b>{end_year}</b>", xref="paper",
         showarrow=False, align="center", yref="paper",
-        font=dict(color="black", size=16))
+        font=dict(color=colors.DARK_GRAY, size=15))
     fig.add_annotation(
         x=-0.32, y=0.6, text=f"<b>{start_year}</b>", xref="paper",
         showarrow=False, align="center", yref="paper", textangle=270,
-        font=dict(color="black", size=16))
+        font=dict(color=colors.DARK_GRAY, size=15))
 
     fig.update_layout(
         xaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
