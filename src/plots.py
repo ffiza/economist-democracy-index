@@ -395,7 +395,7 @@ def plot_regions() -> None:
 def plot_regime_migration(start_year: int, end_year: int) -> None:
     """
     Plots a heatmap of regime type changes between two years.
-    
+
     Parameters
     ----------
     start_year : int
