@@ -1,9 +1,10 @@
 import plotly.graph_objects as go
 from plotly.graph_objects import Figure
+import numpy as np
 
 from colors import Colors
 from data import Data, get_yearly_geographic_data
-from data import get_index_change_geographic_data
+from data import get_index_change_geographic_data, get_migration_matrix
 from config import Config
 
 
@@ -347,6 +348,93 @@ def plot_regions() -> None:
     fig.write_image("reports/figures/map_regions.png")
 
 
+def plot_regime_migration(start_year: int, end_year: int) -> None:
+    m = get_migration_matrix(start_year, end_year)
+    column_labels = ["Full<br>Democracies", "Flawed<br>Democracies",
+                     "Hybrid<br>Regimes", "Authoritarian<br>Regimes"]
+
+    fig = go.Figure()
+
+    # Draw the heatmap
+    fig.add_trace(go.Heatmap(
+        z=m, colorscale="viridis", zmin=0, zmax=60, showscale=False,
+        hoverinfo="skip", x=np.arange(m.shape[1]),
+        y=np.arange(m.shape[0])[::-1]))
+
+    # Add borders to each square
+    num_rows, num_cols = m.shape
+    for i in range(num_rows + 1):
+        fig.add_shape(type="line", x0=-0.5, x1=num_cols - 0.5, y0=i - 0.5,
+                      y1=i - 0.5, line=dict(color="white", width=3))
+    for j in range(num_cols + 1):
+        fig.add_shape(type="line", x0=j - 0.5, x1=j - 0.5, y0=-0.5,
+                      y1=num_rows - 0.5, line=dict(color="white", width=3))
+
+    # Overlay a gray square for the sums
+    for r in range(num_rows):
+        for c in range(num_cols):
+            if r == num_rows - 1 or c == num_cols - 1:
+                fig.add_shape(
+                    type="rect", x0=c - 0.5, x1=c + 0.5,
+                    y0=num_rows - r - 1.5, y1=num_rows - r - 0.5,
+                    fillcolor="gainsboro", line=dict(width=3, color="white"))
+
+    # Overlay a white square for the NaNs
+    nan_positions = np.argwhere(np.isnan(m))
+    for r, c in nan_positions:
+        fig.add_shape(type="rect", x0=c - 0.5, x1=c + 0.5,
+                      y0=num_rows - r - 1.5, y1=num_rows - r - 0.5,
+                      fillcolor="white", line=dict(width=0))
+
+    # Add annotations for values
+    for r in range(num_rows):
+        for c in range(num_cols):
+            if not np.isnan(m[r, c]):
+                text_color = "white"
+                if (r == num_rows - 1 or c == num_cols - 1):
+                    text_color = "black"
+                fig.add_annotation(
+                    x=c, y=num_rows - r - 1,
+                    text="<b>" + str(int(m[r, c])) + "</b>",
+                    showarrow=False, font=dict(color=text_color, size=18))
+
+    # Add labels for columns and rows
+    for i, col in enumerate(column_labels):
+        fig.add_annotation(
+            x=i, y=1, text=column_labels[len(column_labels) - i - 1],
+            showarrow=False, yref="paper", xanchor="center", yanchor="bottom",
+            textangle=270, align="left", font=dict(color="black", size=14))
+        fig.add_annotation(
+            x=0, y=i + 1, text=col, xref="paper", showarrow=False,
+            xanchor="right", yanchor="middle", align="right",
+            font=dict(color="black", size=14))
+
+    fig.add_shape(type="line", x0=-0.2, y0=0.2, x1=-0.2, y1=1, xref="paper",
+                  yref="paper", line=dict(color="black", width=1.5))
+    fig.add_shape(type="line", x0=0, y0=1.2, x1=0.8, y1=1.2, xref="paper",
+                  yref="paper", line=dict(color="black", width=1.5))
+    fig.add_annotation(
+        x=0.4, y=1.255, text=f"<b>{end_year}</b>", xref="paper",
+        showarrow=False, align="center", yref="paper",
+        font=dict(color="black", size=16))
+    fig.add_annotation(
+        x=-0.255, y=0.6, text=f"<b>{start_year}</b>", xref="paper",
+        showarrow=False, align="center", yref="paper", textangle=270,
+        font=dict(color="black", size=16))
+
+    fig.update_layout(
+        xaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
+        yaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
+        width=600, height=600,
+        plot_bgcolor="white",
+        margin=dict(l=120, r=10, t=120, b=10),
+    )
+
+    fig.write_html("reports/html/regime_migration.html",
+                   full_html=False, include_plotlyjs='cdn')
+    fig.write_image("reports/figures/regime_migration.png")
+
+
 if __name__ == "__main__":
     # plot_evolution_regions()
     # plot_evolution_countries()
@@ -354,5 +442,6 @@ if __name__ == "__main__":
     # plot_world_map_index(year=2024)
     # plot_world_map_index_change(start_year=2006, end_year=2015)
     # plot_world_map_index_change(start_year=2006, end_year=2024)
-    plot_world_map_index_change(start_year=2020, end_year=2024)
+    # plot_world_map_index_change(start_year=2020, end_year=2024)
     # plot_regions()
+    plot_regime_migration(start_year=2006, end_year=2024)

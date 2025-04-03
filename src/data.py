@@ -1,5 +1,6 @@
 import pandas as pd
 import geopandas as gpd
+import numpy as np
 
 
 class Data:
@@ -73,11 +74,36 @@ def get_merged_dataframe() -> pd.DataFrame:
     return merged_df
 
 
+def get_yearly_data(year: int) -> pd.DataFrame:
+    df = Data().df
+    df = df[df["Year"] == year]
+
+    # Remap regime types to this year
+    df["RegimeType"] = df["DemocracyIndex"].apply(assign_regime_type)
+
+    return df
+
+
 def get_yearly_geographic_data(year: int) -> pd.DataFrame:
     df = get_merged_dataframe()
     df = df[df["NAME"] != "Antarctica"]
     df = df[df["Year"] == year]
+
+    # Remap regime types to this year
+    df["RegimeType"] = df["DemocracyIndex"].apply(assign_regime_type)
+
     return df
+
+
+def assign_regime_type(democracy_index: float) -> str:
+    regime_type = "Authoritarian"
+    if democracy_index >= 8.0:
+        regime_type = "Full democracy"
+    elif democracy_index >= 6.0:
+        regime_type = "Flawed democracy"
+    elif democracy_index >= 4.0:
+        regime_type = "Hybrid regime"
+    return regime_type
 
 
 def get_index_change_geographic_data(start_year: int,
@@ -89,3 +115,22 @@ def get_index_change_geographic_data(start_year: int,
     df = df[df["Year"] == end_year]
     df["IndexChange"] = index_change
     return df
+
+
+def get_migration_matrix(start_year: int, end_year: int) -> np.ndarray:
+    df1 = get_yearly_data(start_year)
+    df2 = get_yearly_data(end_year)
+
+    regimes = ["Authoritarian", "Hybrid regime",
+               "Flawed democracy", "Full democracy"]
+    n_regimes = len(regimes)
+
+    m = np.zeros((n_regimes + 1, n_regimes + 1))
+    for i, r1 in enumerate(regimes):
+        for j, r2 in enumerate(regimes):
+            m[i, j] = ((df1["RegimeType"].to_numpy() == r1)
+                       & (df2["RegimeType"].to_numpy() == r2)).sum()
+    m[-1, -1] = np.nan
+    m[-1, :n_regimes] = np.sum(m[:n_regimes, :n_regimes], axis=0)
+    m[:n_regimes, -1] = np.sum(m[:n_regimes, :n_regimes], axis=1)
+    return m
