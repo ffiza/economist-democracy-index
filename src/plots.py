@@ -357,8 +357,8 @@ def plot_regime_migration(start_year: int, end_year: int) -> None:
 
     # Draw the heatmap
     fig.add_trace(go.Heatmap(
-        z=m, colorscale="viridis", zmin=0, zmax=60, showscale=False,
-        hoverinfo="skip", x=np.arange(m.shape[1]),
+        z=m, colorscale="viridis", zmin=0, zmax=m[:4, :4].max(),
+        showscale=False, hoverinfo="skip", x=np.arange(m.shape[1]),
         y=np.arange(m.shape[0])[::-1]))
 
     # Add borders to each square
@@ -409,23 +409,23 @@ def plot_regime_migration(start_year: int, end_year: int) -> None:
             xanchor="right", yanchor="middle", align="right",
             font=dict(color="black", size=14))
 
-    fig.add_shape(type="line", x0=-0.2, y0=0.2, x1=-0.2, y1=1, xref="paper",
+    fig.add_shape(type="line", x0=-0.25, y0=0.2, x1=-0.25, y1=1, xref="paper",
                   yref="paper", line=dict(color="black", width=1.5))
-    fig.add_shape(type="line", x0=0, y0=1.2, x1=0.8, y1=1.2, xref="paper",
+    fig.add_shape(type="line", x0=0, y0=1.25, x1=0.8, y1=1.25, xref="paper",
                   yref="paper", line=dict(color="black", width=1.5))
     fig.add_annotation(
-        x=0.4, y=1.255, text=f"<b>{end_year}</b>", xref="paper",
+        x=0.4, y=1.32, text=f"<b>{end_year}</b>", xref="paper",
         showarrow=False, align="center", yref="paper",
         font=dict(color="black", size=16))
     fig.add_annotation(
-        x=-0.255, y=0.6, text=f"<b>{start_year}</b>", xref="paper",
+        x=-0.32, y=0.6, text=f"<b>{start_year}</b>", xref="paper",
         showarrow=False, align="center", yref="paper", textangle=270,
         font=dict(color="black", size=16))
 
     fig.update_layout(
         xaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
         yaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
-        width=600, height=600,
+        width=500, height=500,
         plot_bgcolor="white",
         margin=dict(l=120, r=10, t=120, b=10),
     )
