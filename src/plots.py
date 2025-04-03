@@ -1,6 +1,8 @@
 import plotly.graph_objects as go
 from plotly.graph_objects import Figure
 import numpy as np
+import matplotlib as mpl
+import matplotlib.colors as mcolors
 
 from colors import Colors
 from data import Data, get_yearly_geographic_data
@@ -353,14 +355,60 @@ def plot_regime_migration(start_year: int, end_year: int) -> None:
     m = get_migration_matrix(start_year, end_year)
     column_labels = ["Full<br>Democracies", "Flawed<br>Democracies",
                      "Hybrid<br>Regimes", "Authoritarian<br>Regimes"]
+    text_data = np.array([
+        [f"Authoritarian regimes in {start_year} that<br>remained"
+         f" authoritarian in {end_year}",
+         f"Authoritarian regimes in {start_year} that<br>transitioned to"
+         f" hybrid regimes by {end_year}",
+         f"Authoritarian regimes in {start_year} that<br>transitioned to"
+         f" flawed democracies by {end_year}",
+         f"Authoritarian regimes in {start_year} that<br>transitioned to full "
+         f"democracies by {end_year}",
+         f"Total authoritarian regimes in {start_year}"],
+        [f"Hybrid regimes in {start_year} that<br>transitioned to"
+         f" authoritarian regimes by {end_year}",
+         f"Hybrid regimes in {start_year} that<br>remained hybrid in"
+         f" {end_year}",
+         f"Hybrid regimes in {start_year} that<br>transitioned to flawed "
+         f"democracies by {end_year}",
+         f"Hybrid regimes in {start_year} that<br>transitioned to full "
+         f"democracies by {end_year}",
+         f"Total hybrid regimes in {start_year}"],
+        [f"Flawed democracies in {start_year} that<br>transitioned to"
+         f" authoritarian regimes by {end_year}",
+         f"Flawed democracies in {start_year} that<br>transitioned to hybrid "
+         f"regimes by {end_year}",
+         f"Flawed democracies in {start_year} that<br>remained flawed"
+         f" democracies in {end_year}",
+         f"Flawed democracies in {start_year} that<br>transitioned to full "
+         f"democracies by {end_year}",
+         f"Total flawed democracies in {start_year}"],
+        [f"Full democracies in {start_year} that<br>transitioned to"
+         f" authoritarian regimes by {end_year}",
+         f"Full democracies in {start_year} that<br>transitioned to hybrid "
+         f"regimes by {end_year}",
+         f"Full democracies in {start_year} that<br>transitioned to flawed "
+         f"democracies by {end_year}",
+         f"Full democracies in {start_year} that<br>remained full democracies "
+         f"in {end_year}",
+         f"Total full democracies in {start_year}"],
+        [f"Total authoritarian regimes in {end_year}",
+         f"Total hybrid regimes in {end_year}",
+         f"Total flawed democracies in {end_year}",
+         f"Total full democracies in {end_year}",
+         ""],
+    ], dtype=object)
 
     fig = go.Figure()
 
     # Draw the heatmap
     fig.add_trace(go.Heatmap(
         z=m, colorscale="viridis", zmin=0, zmax=m[:4, :4].max(),
-        showscale=False, hoverinfo="skip", x=np.arange(m.shape[1]),
-        y=np.arange(m.shape[0])[::-1]))
+        text=text_data, showscale=False, hoverinfo="text",
+        hoverlabel=dict(
+            bgcolor="white", bordercolor=colors.DARK_GRAY,
+            font=dict(color=colors.DARK_GRAY)),
+        x=np.arange(m.shape[1]), y=np.arange(m.shape[0])[::-1]))
 
     # Add borders to each square
     num_rows, num_cols = m.shape
@@ -371,66 +419,91 @@ def plot_regime_migration(start_year: int, end_year: int) -> None:
         fig.add_shape(type="line", x0=j - 0.5, x1=j - 0.5, y0=-0.5,
                       y1=num_rows - 0.5, line=dict(color="white", width=3))
 
-    # Overlay a gray square for the sums
+    # Overlay custom colors
+    greens = mpl.colormaps.get_cmap("Greens")
+    light_green = mcolors.to_hex(greens(0.25))
+    medium_green = mcolors.to_hex(greens(0.45))
+    dark_green = mcolors.to_hex(greens(0.65))
+    reds = mpl.colormaps.get_cmap("Reds")
+    light_red = mcolors.to_hex(reds(0.25))
+    medium_red = mcolors.to_hex(reds(0.45))
+    dark_red = mcolors.to_hex(reds(0.65))
+    cmat = [
+         ["white",  light_green, medium_green, dark_green, "gainsboro"],
+         [light_red, "white", light_green, medium_green, "gainsboro"],
+         [medium_red, light_red, "white", light_green, "gainsboro"],
+         [dark_red, medium_red, light_red, "white", "gainsboro"],
+         ["gainsboro", "gainsboro", "gainsboro", "gainsboro", "white"]]
     for r in range(num_rows):
         for c in range(num_cols):
-            if r == num_rows - 1 or c == num_cols - 1:
-                fig.add_shape(
-                    type="rect", x0=c - 0.5, x1=c + 0.5,
-                    y0=num_rows - r - 1.5, y1=num_rows - r - 0.5,
-                    fillcolor="gainsboro", line=dict(width=3, color="white"))
-
-    # Overlay a white square for the NaNs
-    nan_positions = np.argwhere(np.isnan(m))
-    for r, c in nan_positions:
-        fig.add_shape(type="rect", x0=c - 0.5, x1=c + 0.5,
-                      y0=num_rows - r - 1.5, y1=num_rows - r - 0.5,
-                      fillcolor="white", line=dict(width=0))
+            fig.add_shape(
+                type="rect", x0=c - 0.5, x1=c + 0.5,
+                y0=num_rows - r - 1.5, y1=num_rows - r - 0.5,
+                fillcolor=cmat[r][c], line=dict(width=3, color="white"))
 
     # Add annotations for values
     for r in range(num_rows):
         for c in range(num_cols):
             if not np.isnan(m[r, c]):
-                text_color = "white"
-                if (r == num_rows - 1 or c == num_cols - 1 or m[r, c] >= 30):
-                    text_color = colors.DARK_GRAY
                 fig.add_annotation(
-                    x=c, y=num_rows - r - 1,
+                    x=c, y=num_rows - r - 1, showarrow=False,
                     text="<b>" + str(int(m[r, c])) + "</b>",
-                    showarrow=False, font=dict(color=text_color, size=18))
+                    font=dict(color=colors.DARK_GRAY, size=18))
 
     # Add labels for columns and rows
     for i, col in enumerate(column_labels):
         fig.add_annotation(
             x=i, y=1, text=column_labels[len(column_labels) - i - 1],
             showarrow=False, yref="paper", xanchor="center", yanchor="bottom",
-            textangle=270, align="left", font=dict(color=colors.DARK_GRAY,
-                                                   size=14))
+            textangle=270, align="left",
+            font=dict(color=colors.DARK_GRAY, size=14))
         fig.add_annotation(
-            x=0, y=i + 1, text=col, xref="paper", showarrow=False,
+            x=0.05, y=i + 1, text=col, xref="paper", showarrow=False,
             xanchor="right", yanchor="middle", align="right",
             font=dict(color=colors.DARK_GRAY, size=14))
 
-    fig.add_shape(type="line", x0=-0.255, y0=0.2, x1=-0.255, y1=1,
+    fig.add_shape(type="line", x0=-0.228, y0=0.2, x1=-0.228, y1=1,
                   xref="paper", yref="paper",
-                  line=dict(color=colors.DARK_GRAY, width=1.5))
-    fig.add_shape(type="line", x0=0, y0=1.255, x1=0.8, y1=1.255, xref="paper",
-                  yref="paper", line=dict(color=colors.DARK_GRAY, width=1.5))
+                  line=dict(color=colors.DARK_GRAY, width=1.3))
+    fig.add_shape(type="line", x0=0.07, y0=1.31, x1=0.77, y1=1.31,
+                  xref="paper", yref="paper",
+                  line=dict(color=colors.DARK_GRAY, width=1.3))
     fig.add_annotation(
-        x=0.4, y=1.32, text=f"<b>{end_year}</b>", xref="paper",
+        x=0.4, y=1.38, text=f"<b>{end_year}</b>", xref="paper",
         showarrow=False, align="center", yref="paper",
         font=dict(color=colors.DARK_GRAY, size=15))
     fig.add_annotation(
-        x=-0.32, y=0.6, text=f"<b>{start_year}</b>", xref="paper",
+        x=-0.291, y=0.6, text=f"<b>{start_year}</b>", xref="paper",
         showarrow=False, align="center", yref="paper", textangle=270,
         font=dict(color=colors.DARK_GRAY, size=15))
 
+    fig.add_annotation(
+        text=f"<b>Changes in Regime Types, {start_year} - {end_year}</b>",
+        x=-0.42, y=1.5, showarrow=False,
+        xref="paper", yref="paper", xanchor="left", yanchor="middle",
+        font={"color": colors.DARK_GRAY, "size": 20})
+    fig.add_annotation(
+        text="This chart shows the change in regime types between"
+             f" {start_year} and {end_year}.",
+        x=-0.42, y=1.425, showarrow=False, align="left",
+        xref="paper", yref="paper", xanchor="left", yanchor="middle",
+        font={"color": colors.DARK_GRAY, "size": 14})
+    fig.add_annotation(
+        text="<b>Source(s):</b> "
+        + "<a href='https://en.wikipedia.org/wiki/The_Economist"
+        + "_Democracy_Index'>The Economist/Wikipedia</a>",
+        x=-0.42, y=0, showarrow=False,
+        xref="paper", yref="paper", xanchor="left", yanchor="top",
+        font={"color": colors.DARK_GRAY, "size": 11})
+
     fig.update_layout(
-        xaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
-        yaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
+        xaxis=dict(showticklabels=False, showgrid=False, zeroline=False,
+                   scaleanchor="y"),
+        yaxis=dict(showticklabels=False, showgrid=False, zeroline=False,
+                   scaleanchor="x"),
         width=500, height=500,
         plot_bgcolor="white",
-        margin=dict(l=120, r=10, t=120, b=10),
+        margin=dict(l=150, r=8, t=170, b=25),
     )
 
     fig.write_html("reports/html/regime_migration.html",
