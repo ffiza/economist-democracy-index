@@ -2,6 +2,9 @@ import matplotlib.colors as mcolors
 
 
 class Colors:
+    """
+    A class to manage the color palette and color maps of the project.
+    """
     def __init__(self):
         self.LINE = "black"
         self.BLACK = "black"
@@ -25,6 +28,7 @@ class Colors:
         self.LIGHT_BROWN = "#e8dddb"
         self.LIGHT_PINK = "#f9e3f2"
 
+        # A custom colormap to use with Matplotlib
         self.colormaps = {
             "RdWtGr": mcolors.LinearSegmentedColormap.from_list(
                         "RdWtGr",
@@ -32,6 +36,7 @@ class Colors:
                         N=8)
         }
 
+        # A custom colorscale to use with Plotly
         colorscale = []
         for i in range(8):
             j = i / 8
@@ -45,7 +50,21 @@ class Colors:
     @staticmethod
     def get_opaque_hex_from_transparency(hex: str, transparency: float) -> str:
         """
-        Convert a hex color to an opaque hex color with the given transparency.
+        This method take a hex color and a transparency value (between 0 and 1)
+        and returns the equivalent opaque color.
+
+        Parameters
+        ----------
+        hex : str
+            The hexadecimal color.
+        transparency : float
+            The transparency value. Must be between 0 and 1, where 0 is fully
+            transparent and 1 is fully opaque.
+
+        Returns
+        -------
+        str
+            The opaque color in hexadecimal format.
         """
         hex = hex.lstrip("#")
         r, g, b = tuple(int(hex[i:i + 2], 16) for i in (0, 2, 4))

@@ -11,6 +11,9 @@ from config import Config
 
 
 def plot_evolution_regions() -> None:
+    """
+    Plots the evolution of the Democracy Index by region from 2006 to 2024.
+    """
     data = Data()
     config = Config()
     colors = Colors()
@@ -91,6 +94,10 @@ def plot_evolution_regions() -> None:
 
 
 def plot_evolution_countries() -> None:
+    """
+    Plots the evolution of the Democracy Index for selected countries from
+    2006 to 2024.
+    """
     colors = Colors()
 
     fig = go.Figure()
@@ -154,7 +161,21 @@ def plot_evolution_countries() -> None:
 
 
 def _add_country(fig: Figure, country: str, label_pos: tuple,
-                 color: str):
+                 color: str) -> None:
+    """
+    Adds a country to the figure with its corresponding data.
+
+    Parameters
+    ----------
+    fig : Figure
+        The Plotly figure instance to add the country to.
+    country : str
+        The name of the country to add.
+    label_pos : tuple
+        The x and y coordinates for the label position.
+    color : str
+        The color for the country line and label.
+    """
     data = Data()
     country_data = data.df[data.df["Country"] == country]
     fig.add_trace(
@@ -175,6 +196,14 @@ def _add_country(fig: Figure, country: str, label_pos: tuple,
 
 
 def plot_world_map_index(year: int) -> None:
+    """
+    Plots a world map of the Democracy Index for a given year.
+
+    Parameters
+    ----------
+    year : int
+        The year for which to plot the map.
+    """
     df = get_yearly_geographic_data(year=year)
     colors = Colors()
 
@@ -228,6 +257,16 @@ def plot_world_map_index(year: int) -> None:
 
 
 def plot_world_map_index_change(start_year: int, end_year: int) -> None:
+    """
+    Plots a world map of the change in the Democracy Index between two years.
+
+    Parameters
+    ----------
+    start_year : int
+        The starting year for the change calculation.
+    end_year : int
+        The ending year for the change calculation.
+    """
     colors = Colors()
     df = get_index_change_geographic_data(start_year, end_year)
 
@@ -286,6 +325,9 @@ def plot_world_map_index_change(start_year: int, end_year: int) -> None:
 
 
 def plot_regions() -> None:
+    """
+    Plots a world map of the regions defined in the project.
+    """
     df = get_yearly_geographic_data(year=2006)
     colors = Colors()
     config = Config()
@@ -351,6 +393,16 @@ def plot_regions() -> None:
 
 
 def plot_regime_migration(start_year: int, end_year: int) -> None:
+    """
+    Plots a heatmap of regime type changes between two years.
+    
+    Parameters
+    ----------
+    start_year : int
+        The starting year for the reigme change calculation.
+    end_year : int
+        The ending year for the reigme change calculation.
+    """
     colors = Colors()
     m = get_migration_matrix(start_year, end_year)
     column_labels = ["Full<br>Democracies", "Flawed<br>Democracies",

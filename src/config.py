@@ -2,6 +2,10 @@ from colors import Colors
 
 
 class Config:
+    """
+    A class to manage the configuration (mostly related to colors) of the
+    project.
+    """
     def __init__(self):
         colors = Colors()
 

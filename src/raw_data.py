@@ -2,7 +2,10 @@ import pandas as pd
 import wikipedia as wp
 
 
-def get_raw_data():
+def get_raw_data() -> None:
+    """
+    Fetches the Democracy Index data from Wikipedia and saves it as a CSV file.
+    """
     html = wp.page("The_Economist_Democracy_Index").html().encode("utf-8")
 
     try:
