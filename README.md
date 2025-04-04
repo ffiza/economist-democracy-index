@@ -1,7 +1,7 @@
 # The Economist Democracy Index Analysis
 
 This a simple repository to explore some data from the Democracy Index 
-published by the Economist Group. Some figures can be found at `reports/figures/`. More information and interactive plots will be available shortly in an upcoming blog post.
+published by the Economist Group. Some figures can be found at `reports/figures/`. More information and interactive plots are available in a [blog post](https://ffiza.github.io/data-projects/democracy/).
 
 ## Showcase
 
